@@ -6,6 +6,7 @@ import TypeBadge from './TypeBadge';
 import TypeFilter from './TypeFilter';
 import PokemonList from './PokemonList';
 import PokemonCard from './PokemonCard';
+import PokemonListForFilteredType from './PokemonListForFilteredType';
 
 export {
   Banner,
@@ -15,5 +16,6 @@ export {
   TypeBadge,
   TypeFilter,
   PokemonList,
-  PokemonCard
+  PokemonCard,
+  PokemonListForFilteredType
 }

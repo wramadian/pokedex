@@ -1,19 +1,17 @@
-import { Box, CircularProgress, Dialog, Stack } from '@mui/material';
-import { PokemonCard, Stats } from '../components';
+import { Box, Dialog, Stack } from '@mui/material';
+import { PokemonCard, Stats } from '.';
 import { useEffect, useState, useRef } from 'react';
-import { getPokemonList } from '../utils/api';
+import { getDataFromUrl } from '../utils/api';
 import PropTypes from 'prop-types';
 
-export default function PokemonList({
+export default function PokemonListForFilteredType({
   selectedPokemon,
   setSelectedPokemon,
   selectedType,
 }) {
   
-  console.log("💃 ~ file: PokemonList.jsx:12 ~ selectedType:", selectedType)
   const [pokemonList, setPokemonList] = useState([]);
-  const [offset, setOffset] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [offset, setOffset] = useState(20);
   const [openStatsDialog, setOpenStatsDialog] = useState(false);
 
   const loadingRef = useRef(null);
@@ -31,11 +29,9 @@ export default function PokemonList({
   }
 
   const loadMorePokemons = async () => {
-    setLoading(true);
-    const data = await getPokemonList({ offset });
-    setPokemonList(prevList => [...prevList, ...data.results]);
-    setOffset(prevOffset => prevOffset + data.results.length);
-    setLoading(false);
+    if (pokemonList.length > offset){
+      setOffset(offset + 20)
+    }
   };
 
   useEffect(() => {
@@ -46,7 +42,7 @@ export default function PokemonList({
     };
 
     const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting && !loading) {
+      if (entry.isIntersecting) {
         loadMorePokemons();
       }
     }, options);
@@ -60,11 +56,26 @@ export default function PokemonList({
         observer.unobserve(loadingRef.current);
       }
     };
-  }, [loadingRef.current, offset, loading]);
+  }, [loadingRef.current, offset]);
+
+  useEffect(() => {
+    if (selectedType.url){
+      setOffset(20)
+      getDataFromUrl(selectedType?.url).then((data) => {
+        const mappedData = data.pokemon.map((item) => (
+          {
+            name: item.pokemon.name,
+            url: item.pokemon.url
+          }
+        ))
+        setPokemonList(mappedData)
+      })
+    }
+  }, [selectedType?.url])
 
   return (
     <Stack direction='row' flexWrap='wrap'>
-      {pokemonList.map((pokemon) => (
+      {pokemonList.slice(0, offset).map((pokemon) => (
         <Box sx={{ width: 'calc(100% / 5)' }} key={pokemon.name}>
           <PokemonCard
             url={pokemon.url}
@@ -77,18 +88,6 @@ export default function PokemonList({
         ref={loadingRef} 
         style={{ height: '20px' }} 
       />
-      {loading && (
-        <Stack 
-          justifyContent='center' 
-          alignItems='center'
-          sx={{
-            height: 100,
-            width: '100%'
-          }}
-        >
-          <CircularProgress />
-        </Stack>
-      )}
       <Dialog
         open={openStatsDialog}
         onClose={handleOpenStatsDialog}
@@ -102,7 +101,7 @@ export default function PokemonList({
   );
 }
 
-PokemonList.propTypes = {
+PokemonListForFilteredType.propTypes = {
   selectedPokemon: PropTypes.object,
   setSelectedPokemon: PropTypes.func,
   selectedType: PropTypes.object,

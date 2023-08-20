@@ -1,5 +1,5 @@
 import { Stack } from '@mui/material';
-import { PokemonList, TypeFilter } from './components';
+import { PokemonList, PokemonListForFilteredType, TypeFilter } from './components';
 import { useState } from 'react';
 
 export default function Pokedex() {
@@ -21,11 +21,19 @@ export default function Pokedex() {
           selectedType={selectedType}
           setSelectedType={setSelectedType}
         />
-        <PokemonList 
-          selectedPokemon={selectedPokemon}
-          setSelectedPokemon={setSelectedPokemon}
-          selectedType={selectedType}
-        />
+        {
+          selectedType?.url ?
+          <PokemonListForFilteredType 
+            selectedPokemon={selectedPokemon}
+            setSelectedPokemon={setSelectedPokemon}
+            selectedType={selectedType}
+          /> :
+          <PokemonList 
+            selectedPokemon={selectedPokemon}
+            setSelectedPokemon={setSelectedPokemon}
+            selectedType={selectedType}
+          />
+        }
       </Stack>
     </Stack>
   )
