@@ -8,6 +8,7 @@ import { useFindPokemonId, usePokemonTypeData, useTitleCase } from '../utils/hoo
 export default function PokemonCard({
   url,
   selectedPokemon,
+  handleSelectPokemon
 }) {
 
   const [pokemonDetail, setPokemonDetail] = useState({});
@@ -29,6 +30,7 @@ export default function PokemonCard({
       <CardContainer 
         isSelected={selectedPokemon}
         borderColor={firstBackgroundColor?.color}
+        onClick={() => handleSelectPokemon(pokemonDetail)}
       >
         <PhotoContainer
           firstColor={firstBackgroundColor?.color}
@@ -64,13 +66,15 @@ export default function PokemonCard({
 
 PokemonCard.propTypes = {
   url: PropTypes.string,
-  selectedPokemon: PropTypes.bool
+  selectedPokemon: PropTypes.bool,
+  handleSelectPokemon: PropTypes.func
 };
 
 const CardContainer = styled(Box)`
  border-radius: 24px; 
  overflow: hidden;
  border: ${(_) => _.isSelected ? `1px solid ${_.borderColor}` : 'none'};
+ cursor: pointer;
 `
 
 const PhotoContainer = styled(Box)`
@@ -80,7 +84,6 @@ const PhotoContainer = styled(Box)`
   display: flex;
   align-items: center;
   justify-content: center;
-  /* filter: blur(2px); */
 `
 
 const NameContainer = styled(Box)`
