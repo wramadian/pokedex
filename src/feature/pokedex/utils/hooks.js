@@ -30,3 +30,18 @@ export const useTitleCase = (initialText = '') => {
 
   return text;
 };
+
+export const useFindPokemonId = (inputNumber = "0") => {
+  const [formattedNumber, setFormattedNumber] = useState("");
+
+  useEffect(() => {
+    function formatNumber(num) {
+      return "#" + num.toString().padStart(4, "0");
+    }
+
+    setFormattedNumber(formatNumber(inputNumber));
+  }, [inputNumber]);
+
+  return formattedNumber;
+};
+
