@@ -42,10 +42,9 @@ TypeBadge.defaultProps = {
 };
 
 const StyledBadge = styled(Box)`
-  width: 8rem;
-  height: 2.75rem;
-  flex-shrink: 0;
-  border-radius: 0.75rem;
+  width: 100%;
+  border-radius: 12px;
+  height: 50px;
   background: ${(_) => _.badgeColor};
   display: flex;
   cursor: ${(_) => _.isSelection ? 'pointer' : 'auto'};
