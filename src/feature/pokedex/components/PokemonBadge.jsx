@@ -1,11 +1,15 @@
-import styled from '@emotion/styled'
-import { Box } from '@mui/material'
+import styled from '@emotion/styled';
+import { Box } from '@mui/material';
+import PropTypes from 'prop-types';
 
-export default function PokemonBadge() {
+export default function PokemonBadge({
+  photo_url,
+  backgroundColor = '#FFF'
+}) {
   return (
-    <BorderedBagde>
+    <BorderedBagde backgroundColor={backgroundColor}>
       <img 
-        src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/35.png" 
+        src={photo_url} 
         alt="pokemon icon" 
         style={{
           width: 95,
@@ -16,11 +20,16 @@ export default function PokemonBadge() {
   )
 }
 
+PokemonBadge.propTypes = {
+  photo_url: PropTypes.string,
+  backgroundColor: PropTypes.string,
+};
+
 const BorderedBagde = styled(Box)`
-  border-radius: 1rem;
-  border: 2px solid #B3B3B3;
-  background: #FFF;
-  height: 70px;
+  border-radius: 12px;
+  background: ${(_) => _.backgroundColor};
+  height: 100%;
+  aspect-ratio: 1/1;
   display: flex;
   justify-content: center;
   align-items: center;

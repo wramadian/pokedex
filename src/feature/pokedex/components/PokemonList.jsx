@@ -1,5 +1,5 @@
-import { Box, CircularProgress, Stack } from '@mui/material';
-import PokemonCard from './PokemonCard';
+import { Box, CircularProgress, Dialog, Stack } from '@mui/material';
+import { PokemonCard, Stats } from '../components';
 import { useEffect, useState, useRef } from 'react';
 import { getPokemonList } from '../utils/api';
 import PropTypes from 'prop-types';
@@ -11,11 +11,22 @@ export default function PokemonList({
   const [pokemonList, setPokemonList] = useState([]);
   const [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [openStatsDialog, setOpenStatsDialog] = useState(false);
+
   const loadingRef = useRef(null);
+
+  const handleOpenStatsDialog = () => {
+    setOpenStatsDialog((prev) => !prev)
+    if (openStatsDialog){
+      setSelectedPokemon({})
+    }
+  }
 
   const handleSelectPokemon = (data) => {
     setSelectedPokemon(data);
+    handleOpenStatsDialog()
   }
+
 
   const loadMorePokemons = async () => {
     setLoading(true);
@@ -24,12 +35,6 @@ export default function PokemonList({
     setOffset(prevOffset => prevOffset + data.results.length);
     setLoading(false);
   };
-
-  useEffect(() => {
-    getPokemonList({ offset: 0 }).then((data) => {
-      setPokemonList(data.results)
-    });
-  }, []);
 
   useEffect(() => {
     const options = {
@@ -82,6 +87,15 @@ export default function PokemonList({
           <CircularProgress />
         </Stack>
       )}
+      <Dialog
+        open={openStatsDialog}
+        onClose={handleOpenStatsDialog}
+      >
+        <Stats 
+          selectedPokemon={selectedPokemon} 
+          handleClose={handleOpenStatsDialog}
+        />
+      </Dialog>
     </Stack>
   );
 }
