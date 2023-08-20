@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import { Box, Typography } from '@mui/material'
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-import { getDetailPokemonData } from '../utils/api';
+import { getDataFromUrl } from '../utils/api';
 import { useFindPokemonId, usePokemonTypeData, useTitleCase } from '../utils/hooks';
 
 export default function PokemonCard({
@@ -24,7 +24,7 @@ export default function PokemonCard({
 
 
   useEffect(() => {
-    getDetailPokemonData(url).then(data => {
+    getDataFromUrl(url).then(data => {
       setPokemonDetail(data)
     })
   }, [url])
@@ -46,7 +46,7 @@ export default function PokemonCard({
             alt={pokemonDetail?.name} 
             style={{
               aspectRatio: '1/1',
-              maxHeight: '200px'
+              height: '80%'
             }}
           />
         </PhotoContainer>

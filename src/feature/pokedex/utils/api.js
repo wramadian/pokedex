@@ -10,7 +10,6 @@ export function getPokemonList({ offset }) {
         return response.json();
       })
       .then(data => {
-        console.log('Data dari API:', data);
         resolve(data); // Menggunakan resolve saat data berhasil diambil
       })
       .catch(error => {
@@ -20,7 +19,7 @@ export function getPokemonList({ offset }) {
   });
 }
 
-export function getDetailPokemonData(url) {
+export function getDataFromUrl(url) {
   return new Promise((resolve, reject) => {
     fetch(url)
       .then(response => {
@@ -30,7 +29,27 @@ export function getDetailPokemonData(url) {
         return response.json();
       })
       .then(data => {
-        console.log('Data dari API:', data);
+        resolve(data); // Menggunakan resolve saat data berhasil diambil
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        reject(error); // Menggunakan reject saat terjadi kesalahan
+      });
+  });
+}
+
+export function getPokemonType() {
+  return new Promise((resolve, reject) => {
+    const apiUrl = `https://pokeapi.co/api/v2/type`;
+
+    fetch(apiUrl)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Terjadi kesalahan saat mengambil data.');
+        }
+        return response.json();
+      })
+      .then(data => {
         resolve(data); // Menggunakan resolve saat data berhasil diambil
       })
       .catch(error => {

@@ -1,17 +1,18 @@
 import { Box, Button, Dialog, IconButton, Stack, Typography } from '@mui/material';
 import { TypeBadge } from '../components'
-import { pokemonTypeList } from '../utils/data';
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import { CloseRounded } from '@mui/icons-material';
+import { getPokemonType } from '../utils/api';
 
-export default function TypeFilter() {
+export default function TypeFilter({
+  selectedType,
+  setSelectedType
+}) {
 
-  const masterType = Object.keys(pokemonTypeList);
-
-  const [slicedMasterType, setSlicedMasterType] = useState(masterType.slice(0, 8));
-  const [selectedType, setSelectedType] = useState('');
+  const [typeList, setTypeList] = useState([]);
+  const [slicedMasterType, setSliceMasterType] = useState([]);
   const [openAllTypesDialog, setOpenAllTypesDialog] = useState(false);
 
   const handleSelectType = (type) => {
@@ -23,15 +24,20 @@ export default function TypeFilter() {
   }
 
   useEffect(() => {
-    if (selectedType){
-      setSlicedMasterType(
-        [
+    if (selectedType?.name){
+      setSliceMasterType([
           selectedType, 
-          ...masterType.filter((type) => type !== selectedType).slice(0, 7)
-        ]
-      )
+          ...typeList.filter((type) => type.name !== selectedType.name).slice(0, 5)
+        ])
     }
-  }, [masterType, selectedType])
+  }, [selectedType.name])
+
+  useEffect(() => {
+    getPokemonType().then((data) => {
+      setTypeList(data.results);
+      setSliceMasterType(data.results.slice(0, 6));
+    })
+  }, [])
   
   return (
     <Stack 
@@ -40,12 +46,12 @@ export default function TypeFilter() {
       flexWrap='wrap'
     >
       {
-        slicedMasterType.map((typeName, index) => (
-          <Box onClick={() => handleSelectType(typeName)} key={index}>
+        slicedMasterType.map((type, index) => (
+          <Box onClick={() => handleSelectType(type)} key={index}>
             <TypeBadge  
-              isBadgeActive={typeName === selectedType}
+              isBadgeActive={type?.name === selectedType.name}
               isSelection={true}
-              typeName={typeName}
+              typeName={type?.name}
             />
           </Box>
         ))
@@ -67,19 +73,24 @@ export default function TypeFilter() {
           handleSelectType={handleSelectType}
           handleOpenAllTypesDialog={handleOpenAllTypesDialog}
           selectedType={selectedType}
+          typeList={typeList}
         />
       </Dialog>
     </Stack>
   )
 }
 
+TypeFilter.propTypes = {
+  selectedType: PropTypes.object,
+  setSelectedType: PropTypes.func,
+};
+
 const RenderViewAllTypes = ({
   handleSelectType,
   handleOpenAllTypesDialog,
-  selectedType
+  selectedType,
+  typeList
 }) => {
-
-  const masterType = Object.keys(pokemonTypeList);
 
   const handleSelect = (type) => {
     handleSelectType(type)
@@ -105,12 +116,12 @@ const RenderViewAllTypes = ({
         sx={{gap: 1}}
       >
         {
-          masterType.map((typeName, index) => (
-            <Box onClick={() => handleSelect(typeName)} key={index}>
+          typeList.map((type, index) => (
+            <Box onClick={() => handleSelect(type)} key={index}>
               <TypeBadge  
-                isBadgeActive={typeName === selectedType}
+                isBadgeActive={type.name === selectedType.name}
                 isSelection={true}
-                typeName={typeName}
+                typeName={type.name}
               />
             </Box>
           ))
@@ -123,7 +134,8 @@ const RenderViewAllTypes = ({
 RenderViewAllTypes.propTypes = {
   handleSelectType: PropTypes.func,
   handleOpenAllTypesDialog: PropTypes.func,
-  selectedType: PropTypes.string,
+  selectedType: PropTypes.object,
+  typeList: PropTypes.array,
 };
 
 const DialogContainer = styled(Stack)`
