@@ -1,6 +1,8 @@
+import Pokedex from './feature/pokedex/Pokedex'
+
 function App() {
   return (
-    <>Gotta catch 'em all!</>
+    <Pokedex />
   )
 }
 
