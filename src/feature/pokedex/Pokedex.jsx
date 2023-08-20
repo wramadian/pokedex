@@ -16,7 +16,7 @@ export default function Pokedex() {
         position: 'relative',
       }}
     >
-      <Stack spacing={2} sx={{maxWidth: 900, margin: 'auto !important'}}>
+      <Stack spacing={2} sx={{maxWidth: 1080, margin: 'auto !important'}}>
         <TypeFilter 
           selectedType={selectedType}
           setSelectedType={setSelectedType}
