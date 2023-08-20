@@ -30,7 +30,7 @@ export default function Banner() {
               color='#FFF'
               sx={{fontWeight: 600}} 
               variant='h6' 
-            >Jelajahi dunia Pokémon yang penuh petualangan, tangkap makhluk-makhluk menakjubkan, dan buktikan kemampuanmu sebagai seorang Trainer terbaik!</Typography>
+            >Explore the adventure-filled world of Pokémon, catch amazing creatures, and prove yourself as the best Trainer!</Typography>
             <Button 
               size='large'
               sx={{marginTop: 2}}
