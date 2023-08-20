@@ -1,42 +1,82 @@
 import styled from '@emotion/styled'
 import { Box, Typography } from '@mui/material'
+import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
+import { getDetailPokemonData } from '../utils/api';
+import { useFindPokemonId, usePokemonTypeData, useTitleCase } from '../utils/hooks';
 
-export default function PokemonCard() {
+export default function PokemonCard({
+  url,
+  selectedPokemon,
+}) {
+
+  const [pokemonDetail, setPokemonDetail] = useState({});
+
+  const pokemonName = useTitleCase(pokemonDetail?.name);
+  const pokemonId = useFindPokemonId(pokemonDetail?.id)
+  const firstBackgroundColor = usePokemonTypeData(pokemonDetail?.types?.[0]?.type?.name);
+  const secondBackgroundColor = usePokemonTypeData(pokemonDetail?.types?.[0]?.type?.name);
+
+  useEffect(() => {
+    getDetailPokemonData(url).then(data => {
+      setPokemonDetail(data)
+    })
+  }, [url])
+
+
   return (
     <Box p={1}>
-      <CardContainer>
-        <PhotoContainer>
+      <CardContainer 
+        isSelected={selectedPokemon}
+        borderColor={firstBackgroundColor?.color}
+      >
+        <PhotoContainer
+          firstColor={firstBackgroundColor?.color}
+          secondColor={pokemonDetail?.types?.length > 1 
+            ? secondBackgroundColor?.color 
+            : firstBackgroundColor?.color
+          }
+        >
           <img 
-            src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/1.svg" 
-            alt="pokemon photo" 
+            src={pokemonDetail?.sprites?.other?.dream_world?.front_default} 
+            alt={pokemonDetail?.name} 
+            style={{
+              aspectRatio: '1/1',
+              maxHeight: '200px'
+            }}
           />
         </PhotoContainer>
         <NameContainer>
           <Typography 
             sx={{fontWeight: 600}}
             variant='body1'
-          >Bulbasaur</Typography>
+          >{pokemonName}</Typography>
           <Typography 
             color='#DEDEDE'
             sx={{fontWeight: 600}}
             variant='body1'
-          >#0001</Typography>
+          >{pokemonId}</Typography>
         </NameContainer>
       </CardContainer>
     </Box>
   )
 }
 
+PokemonCard.propTypes = {
+  url: PropTypes.string,
+  selectedPokemon: PropTypes.bool
+};
+
 const CardContainer = styled(Box)`
  border-radius: 24px; 
  overflow: hidden;
- border: 1px solid #9BCC50;
+ border: ${(_) => _.isSelected ? `1px solid ${_.borderColor}` : 'none'};
 `
 
 const PhotoContainer = styled(Box)`
   width: 100%;
   aspect-ratio: 1/1;
-  background: linear-gradient(135deg, #9BCC50 0%, #FFF 50%, #B97FC9 100%);
+  background: ${(_) => `linear-gradient(135deg, ${_.firstColor} 0%, #FFF 50%, ${_.secondColor} 100%)`};
   display: flex;
   align-items: center;
   justify-content: center;
