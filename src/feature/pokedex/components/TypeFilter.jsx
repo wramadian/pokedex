@@ -23,12 +23,14 @@ export default function TypeFilter() {
   }
 
   useEffect(() => {
-    setSlicedMasterType(
-      [
-        selectedType, 
-        ...masterType.filter((type) => type !== selectedType).slice(0, 7)
-      ]
-    )
+    if (selectedType){
+      setSlicedMasterType(
+        [
+          selectedType, 
+          ...masterType.filter((type) => type !== selectedType).slice(0, 7)
+        ]
+      )
+    }
   }, [masterType, selectedType])
   
   return (
