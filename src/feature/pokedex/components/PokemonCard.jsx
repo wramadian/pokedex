@@ -16,7 +16,12 @@ export default function PokemonCard({
   const pokemonName = useTitleCase(pokemonDetail?.name);
   const pokemonId = useFindPokemonId(pokemonDetail?.id)
   const firstBackgroundColor = usePokemonTypeData(pokemonDetail?.types?.[0]?.type?.name);
-  const secondBackgroundColor = usePokemonTypeData(pokemonDetail?.types?.[0]?.type?.name);
+  const secondBackgroundColor = usePokemonTypeData(
+    pokemonDetail?.types?.length > 1 
+    ? pokemonDetail?.types?.[1]?.type?.name
+    : pokemonDetail?.types?.[0]?.type?.name
+  );
+
 
   useEffect(() => {
     getDetailPokemonData(url).then(data => {
@@ -34,10 +39,7 @@ export default function PokemonCard({
       >
         <PhotoContainer
           firstColor={firstBackgroundColor?.color}
-          secondColor={pokemonDetail?.types?.length > 1 
-            ? secondBackgroundColor?.color 
-            : firstBackgroundColor?.color
-          }
+          secondColor={secondBackgroundColor?.color}
         >
           <img 
             src={pokemonDetail?.sprites?.other?.dream_world?.front_default} 
