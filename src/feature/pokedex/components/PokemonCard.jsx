@@ -42,7 +42,7 @@ export default function PokemonCard({
           secondColor={secondBackgroundColor?.color}
         >
           <img 
-            src={pokemonDetail?.sprites?.other?.dream_world?.front_default} 
+            src={pokemonDetail?.sprites?.other?.['official-artwork']?.front_default} 
             alt={pokemonDetail?.name} 
             style={{
               aspectRatio: '1/1',
