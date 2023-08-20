@@ -10,6 +10,7 @@ export default function Stats({
 }) {
 
   const pokemonName = useTitleCase(selectedPokemon?.name);
+  console.log("💃 ~ file: Stats.jsx:13 ~ pokemonName:", selectedPokemon?.height*10)
   const pokemonId = useFindPokemonId(selectedPokemon?.id);
 
   const statData = selectedPokemon?.stats?.reduce((result, stat) => {
@@ -57,11 +58,19 @@ export default function Stats({
           <Stack direction='row' spacing={2} flexWrap='wrap' justifyContent='space-between'>
             <Stack sx={{width: '40%', marginLeft: '16px !important'}} alignItems='flex-end'>
               <Typography variant='body1' color='#B3B3B3'>Height</Typography>
-              <Typography variant='h3'>{selectedPokemon?.height*10} cm</Typography>
+              <Typography variant='h3'>{
+                (selectedPokemon?.height*10)%1 !== 0 
+                  ? Number(selectedPokemon?.height*10).toFixed(1)
+                  : selectedPokemon?.height*10
+              } cm</Typography>
             </Stack>
             <Stack sx={{width: '40%'}} alignItems='flex-start'>
               <Typography variant='body1' color='#B3B3B3'>Weight</Typography>
-              <Typography variant='h3'>{selectedPokemon?.weight*0.1} kg</Typography>
+              <Typography variant='h3'>{
+                (selectedPokemon?.weight*0.1)%1 !== 0 
+                  ? Number(selectedPokemon?.weight*0.1).toFixed(1)
+                  : selectedPokemon?.weight*0.1
+              } kg</Typography>
             </Stack>
             {
               statTitle.map((item, index) => (
