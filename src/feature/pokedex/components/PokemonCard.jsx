@@ -66,7 +66,7 @@ export default function PokemonCard({
 
 PokemonCard.propTypes = {
   url: PropTypes.string,
-  selectedPokemon: PropTypes.bool,
+  selectedPokemon: PropTypes.object,
   handleSelectPokemon: PropTypes.func
 };
 
