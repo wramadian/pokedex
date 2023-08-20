@@ -1,4 +1,4 @@
-const pokemonTypeList = {
+export const pokemonTypeList = {
   normal: {
     label: 'Normal',
     color: '#A4ACAF',
@@ -121,6 +121,29 @@ const pokemonTypeList = {
   }
 };
 
-export {
-  pokemonTypeList
-}
+export const statTitle = [
+  {
+    label: 'HP',
+    key: 'hp',
+  },
+  {
+    label: 'Attack',
+    key: 'attack',
+  },
+  {
+    label: 'Defense',
+    key: 'defense',
+  },
+  {
+    label: 'Sp. Attack',
+    key: 'special-attack',
+  },
+  {
+    label: 'Sp. Defense',
+    key: 'special-defense',
+  },
+  {
+    label: 'Speed',
+    key: 'speed',
+  },
+]
