@@ -1,5 +1,3 @@
-import Banner from './Banner';
-import WishPokemon from './WishPokemon';
 import PokemonBadge from './PokemonBadge';
 import Stats from './Stats';
 import TypeBadge from './TypeBadge';
@@ -9,8 +7,6 @@ import PokemonCard from './PokemonCard';
 import PokemonListForFilteredType from './PokemonListForFilteredType';
 
 export {
-  Banner,
-  WishPokemon,
   PokemonBadge,
   Stats,
   TypeBadge,
